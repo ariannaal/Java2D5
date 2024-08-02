@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 public class Application {
 
 
-    // metodi
-
     public static void main(String[] args) throws IOException {
+
+        File file = new File("src/saveDisco.txt");
 
         Scanner scanner = new Scanner(System.in);
 
@@ -64,6 +64,7 @@ public class Application {
             System.out.println("Premi 5 per effettuare una ricerca tramite autore");
             System.out.println("Premi 6 per effettuare un salvataggio sul disco dell'archivio.");
             System.out.println("Premi 7 per effettuare un caricamento dal disco dell'archivio in una nuova lista.");
+            System.out.println("Premi 0 per chiudere il programma.");
 
             int nOperazione = scanner.nextInt();
             scanner.nextLine();
@@ -86,8 +87,12 @@ public class Application {
                     ricercaAutore(archivio);
                     break;
                 case 6:
-                    salvataggioSuDisco(archivio);
+                    salvataggioSuDisco(archivio, file);
                     break;
+                case 0:
+                    System.out.println("Chiudo...");
+                    scanner.close();
+                    return;
 
             }
 
@@ -280,9 +285,9 @@ public class Application {
     }
 
     // salvataggio sul disco
-    public static void salvataggioSuDisco(List<Catalogo> archivio) throws IOException {
+    public static void salvataggioSuDisco(List<Catalogo> archivio, File file) throws IOException {
+
         StringBuilder stringa = new StringBuilder();
-        File file = new File("src/saveDisco.txt");
 
         for (Catalogo catalogo : archivio) {
             stringa.append(catalogo.getIsbn()).append(",")
