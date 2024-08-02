@@ -5,7 +5,11 @@ import entities.Catalogo;
 import entities.Libri;
 import entities.Riviste;
 import enums.Periodicita;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -14,7 +18,10 @@ import java.util.stream.Collectors;
 
 public class Application {
 
-    public static void main(String[] args) {
+
+    // metodi
+
+    public static void main(String[] args) throws IOException {
 
         Scanner scanner = new Scanner(System.in);
 
@@ -78,15 +85,15 @@ public class Application {
                 case 5:
                     ricercaAutore(archivio);
                     break;
-
+                case 6:
+                    salvataggioSuDisco(archivio);
+                    break;
 
             }
 
         }
 
     }
-
-    // metodi
 
     // aggiunta elemento
     private static void aggiungiElemento(List<Catalogo> archivio) {
@@ -260,7 +267,6 @@ public class Application {
         }
     }
 
-
     private static Periodicita errPeriodicita() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -271,6 +277,34 @@ public class Application {
                 System.out.println("Periodicita' non valida. Inserisci una delle seguenti opzioni: SETTIMANALE, MENSILE, SEMESTRALE.");
             }
         }
+    }
+
+    // salvataggio sul disco
+    public static void salvataggioSuDisco(List<Catalogo> archivio) throws IOException {
+        StringBuilder stringa = new StringBuilder();
+        File file = new File("src/saveDisco.txt");
+
+        for (Catalogo catalogo : archivio) {
+            stringa.append(catalogo.getIsbn()).append(",")
+                    .append(catalogo.getTitolo()).append(",")
+                    .append(catalogo.getAnnoPubblicazione()).append(",")
+                    .append(catalogo.getnPagine()).append(",");
+
+            if (catalogo instanceof Libri) {
+                Libri libro = (Libri) catalogo;
+                stringa.append("libro,")
+                        .append(libro.getAutore()).append(",")
+                        .append(libro.getGenere()).append("\n");
+            } else if (catalogo instanceof Riviste) {
+                Riviste rivista = (Riviste) catalogo;
+                stringa.append("rivista,")
+                        .append(rivista.getPeriodicita()).append("\n");
+            }
+        }
+
+        FileUtils.writeStringToFile(file, stringa.toString(), StandardCharsets.UTF_8);
+        System.out.println("Elementi del catalogo aggiunti a " + file.getAbsolutePath());
+
     }
 
     private static int errPagine() {
