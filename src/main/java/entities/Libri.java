@@ -19,4 +19,12 @@ public class Libri extends Catalogo {
     public String getGenere() {
         return genere;
     }
+
+    @Override
+    public String toString() {
+        return "Libri{" +
+                "autore='" + autore + '\'' +
+                ", genere='" + genere + '\'' +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package org.example;
 
+import com.github.javafaker.Faker;
 import entities.Catalogo;
 import entities.Libri;
 import entities.Riviste;
@@ -7,6 +8,7 @@ import enums.Periodicita;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Application {
@@ -15,7 +17,35 @@ public class Application {
 
         Scanner scanner = new Scanner(System.in);
 
+        Faker faker = new Faker(Locale.ITALY);
+
         List<Catalogo> archivio = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++) { // creo tre libri a caso con faker
+            Libri libro = new Libri(
+                    faker.code().isbn13(),
+                    faker.book().title(),
+                    faker.number().numberBetween(1900, 2024),
+                    faker.number().numberBetween(100, 1000),
+                    faker.book().author(),
+                    faker.book().genre()
+            );
+            archivio.add(libro);
+        }
+
+        for (int i = 0; i < 4; i++) {
+            Riviste rivista = new Riviste(
+                    faker.code().isbn13(),
+                    faker.book().title(),
+                    faker.number().numberBetween(1970, 2024),
+                    faker.number().numberBetween(30, 150),
+                    Periodicita.values()[faker.number().numberBetween(0, Periodicita.values().length)]
+            );
+            archivio.add(rivista);
+        }
+
+        System.out.println(archivio);
+
 
         while (true) {
             System.out.println("Quale operazione vuoi eseguire?");
@@ -37,6 +67,10 @@ public class Application {
 
                 case 2:
                     rimuoviElemento(archivio);
+                    break;
+                case 3:
+                    ricercaISBN(archivio);
+                    break;
 
 
             }
@@ -47,6 +81,7 @@ public class Application {
 
     // metodi
 
+    // aggiunta elemento
     private static void aggiungiElemento(List<Catalogo> archivio) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Vuoi aggiungere un libro o una rivista? Scrivi 'libro' per aggiungere un libro o 'rivista' per aggiungere una rivista.");
@@ -104,6 +139,7 @@ public class Application {
 
     }
 
+    // rimuopvi elemento
     private static void rimuoviElemento(List<Catalogo> archivio) {
 
         Scanner scanner = new Scanner(System.in);
@@ -122,6 +158,39 @@ public class Application {
             System.out.println("L'elemento con ISBN " + isbn + " è stato rimosso dall'archivio.");
         } else {
             System.out.println("Nessun elemento trovato con ISBN " + isbn + ".");
+        }
+
+    }
+
+    // ricerca con isbn
+    private static void ricercaISBN(List<Catalogo> archivio) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Inserisci il codice ISBN dell'elemento da cercare:");
+        String isbnInserito = scanner.nextLine();
+
+        try {
+            Catalogo elTrovato = archivio.stream()
+                    .filter(catalogo -> catalogo.getIsbn()
+                            .equals(isbnInserito))
+                    .findFirst()
+                    .orElse(null);
+
+            if (elTrovato instanceof Libri) {
+                Libri libroTrovato = (Libri) elTrovato;
+                System.out.print("Libro trovato. Autore: " + libroTrovato.getAutore() + ", titolo: " + libroTrovato.getTitolo());
+            }
+
+            if (elTrovato instanceof Riviste) {
+                Riviste rivistaTrovata = (Riviste) elTrovato;
+                System.out.print("Rivista trovato. Titolo: " + rivistaTrovata.getTitolo());
+            } else {
+                System.out.println("Nessun elemento trovato nel catalogo con codice ISBN " + isbnInserito);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Codice ISBN inserito non valido.");
+
         }
 
     }

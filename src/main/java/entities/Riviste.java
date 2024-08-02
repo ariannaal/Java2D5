@@ -15,5 +15,10 @@ public class Riviste extends Catalogo {
         return periodicita;
     }
 
-
+    @Override
+    public String toString() {
+        return "Riviste{" +
+                "periodicita=" + periodicita +
+                '}';
+    }
 }
