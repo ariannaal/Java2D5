@@ -6,7 +6,7 @@ public class Riviste extends Catalogo {
 
     private Periodicita periodicita;
 
-    public Riviste(long isbn, String titolo, int annoPubblicazione, int nPagine, Periodicita periodicita) {
+    public Riviste(String isbn, String titolo, int annoPubblicazione, int nPagine, Periodicita periodicita) {
         super(isbn, titolo, annoPubblicazione, nPagine);
         this.periodicita = periodicita;
     }

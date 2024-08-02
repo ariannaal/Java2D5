@@ -2,19 +2,19 @@ package entities;
 
 public abstract class Catalogo {
 
-    private long isbn;
+    private String isbn;
     private String titolo;
     private int annoPubblicazione;
     private int nPagine;
 
-    public Catalogo(long isbn, String titolo, int annoPubblicazione, int nPagine) {
+    public Catalogo(String isbn, String titolo, int annoPubblicazione, int nPagine) {
         this.isbn = isbn;
         this.titolo = titolo;
         this.annoPubblicazione = annoPubblicazione;
         this.nPagine = nPagine;
     }
 
-    public long getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 

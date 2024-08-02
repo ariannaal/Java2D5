@@ -35,11 +35,13 @@ public class Application {
                     aggiungiElemento(archivio);
                     break;
 
+                case 2:
+                    rimuoviElemento(archivio);
+
 
             }
 
         }
-
 
     }
 
@@ -54,7 +56,7 @@ public class Application {
             switch (elAggiunto) {
                 case "libro":
                     System.out.println("Inserisci il codice ISBN del libro");
-                    long isbnLibro = scanner.nextLong();
+                    String isbnLibro = scanner.nextLine();
                     System.out.println("Inserisci il titolo del libro");
                     String titoloLibro = scanner.nextLine();
                     System.out.println("Inserisci l'anno di pubblicazione del libro");
@@ -73,7 +75,7 @@ public class Application {
 
                 case "rivista":
                     System.out.println("Inserisci il codice ISBN della rivista");
-                    long isbnRivista = scanner.nextLong();
+                    String isbnRivista = scanner.nextLine();
                     System.out.println("Inserisci il titolo della rivista");
                     String titoloRivista = scanner.nextLine();
                     System.out.println("Inserisci l'anno di pubblicazione della rivista");
@@ -97,9 +99,30 @@ public class Application {
 
         } catch (Exception e) {
             System.out.println("Errore durante l'inserimento dell'elemento " + e.getMessage());
-            
+
         }
 
+    }
+
+    private static void rimuoviElemento(List<Catalogo> archivio) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Inserisci il codice ISBN dell'elemento da rimuovere:");
+        String isbn = scanner.nextLine();
+
+        // verifico prima che l'elemento esista
+        boolean elEsiste = archivio.stream()
+                .anyMatch(catalogo -> catalogo.getIsbn()
+                        .equals(isbn));
+
+        if (elEsiste) {
+            // rimuove l'elemento dall'archivio
+            archivio.removeIf(catalogo -> catalogo.getIsbn().equals(isbn));
+            System.out.println("L'elemento con ISBN " + isbn + " è stato rimosso dall'archivio.");
+        } else {
+            System.out.println("Nessun elemento trovato con ISBN " + isbn + ".");
+        }
 
     }
 
@@ -112,7 +135,6 @@ public class Application {
             } catch (IllegalArgumentException e) {
                 System.out.println("Periodicita' non valida. Inserisci una delle seguenti opzioni: SETTIMANALE, MENSILE, SEMESTRALE.");
             }
-
         }
     }
 
