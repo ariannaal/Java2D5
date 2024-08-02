@@ -25,6 +25,10 @@ public class Libri extends Catalogo {
         return "Libri{" +
                 "autore='" + autore + '\'' +
                 ", genere='" + genere + '\'' +
+                ", titolo='" + getTitolo() + '\'' +
+                ", anno pubblicazione='" + getAnnoPubblicazione() + '\'' +
+                ", numero di pagine='" + getnPagine() + '\'' +
+                ", codice ISBN='" + getIsbn() + '\'' +
                 '}';
     }
 }

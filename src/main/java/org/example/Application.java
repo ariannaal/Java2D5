@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Application {
 
@@ -73,6 +74,9 @@ public class Application {
                     break;
                 case 4:
                     ricercaAnno(archivio);
+                    break;
+                case 5:
+                    ricercaAutore(archivio);
                     break;
 
 
@@ -228,6 +232,34 @@ public class Application {
         }
 
     }
+
+    // ricerca per autore
+    private static void ricercaAutore(List<Catalogo> archivio) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Inserisci l'autore degli elementi da cercare:");
+        String autoreInserito = scanner.nextLine();
+
+        try {
+            List<Libri> libriTrovati = archivio.stream()
+                    .filter(catalogo -> catalogo instanceof Libri)
+                    .map(catalogo -> (Libri) catalogo)
+                    .filter(libro -> libro.getAutore().equals(autoreInserito))
+                    .collect(Collectors.toList());
+
+            if (libriTrovati.isEmpty()) {
+                System.out.println("Nessun libro trovato per l'autore " + autoreInserito);
+            } else {
+                libriTrovati.forEach(libro -> {
+                    System.out.println("Libro trovato. Titolo: " + libro.getTitolo() + ", anno di Pubblicazione: " + libro.getAnnoPubblicazione());
+                });
+            }
+        } catch (Exception e) {
+            System.out.println("Errore durante la ricerca: " + e.getMessage());
+        }
+    }
+
 
     private static Periodicita errPeriodicita() {
         Scanner scanner = new Scanner(System.in);
