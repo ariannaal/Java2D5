@@ -21,9 +21,9 @@ public class Application {
 
         List<Catalogo> archivio = new ArrayList<>();
 
-        for (int i = 0; i < 4; i++) { // creo tre libri a caso con faker
+        for (int i = 0; i < 4; i++) { // creo 4 libri a caso con faker
             Libri libro = new Libri(
-                    faker.code().isbn13(),
+                    faker.code().isbn10(),
                     faker.book().title(),
                     faker.number().numberBetween(1900, 2024),
                     faker.number().numberBetween(100, 1000),
@@ -70,6 +70,9 @@ public class Application {
                     break;
                 case 3:
                     ricercaISBN(archivio);
+                    break;
+                case 4:
+                    ricercaAnno(archivio);
                     break;
 
 
@@ -180,16 +183,47 @@ public class Application {
             if (elTrovato instanceof Libri) {
                 Libri libroTrovato = (Libri) elTrovato;
                 System.out.print("Libro trovato. Autore: " + libroTrovato.getAutore() + ", titolo: " + libroTrovato.getTitolo());
+                return;
             }
 
             if (elTrovato instanceof Riviste) {
                 Riviste rivistaTrovata = (Riviste) elTrovato;
                 System.out.print("Rivista trovato. Titolo: " + rivistaTrovata.getTitolo());
-            } else {
-                System.out.println("Nessun elemento trovato nel catalogo con codice ISBN " + isbnInserito);
+                return;
             }
+
+            System.out.println("Nessun elemento trovato nel catalogo con codice ISBN " + isbnInserito);
+
         } catch (NumberFormatException e) {
             System.out.println("Codice ISBN inserito non valido.");
+
+        }
+
+    }
+
+    // ricerca per anno
+    private static void ricercaAnno(List<Catalogo> archivio) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Inserisci l'anno di pubblicazione degli elementi da cercare:");
+        int annoInserito = scanner.nextInt();
+
+
+        List<Catalogo> elTrovati = archivio.stream()
+                .filter(catalogo -> catalogo.getAnnoPubblicazione() == annoInserito)
+                .toList();
+
+        if (elTrovati instanceof Libri) {
+            Libri libriTrovati = (Libri) elTrovati;
+            System.out.print("Libri con anno di pubblicazione " + libriTrovati.getAnnoPubblicazione() + " trovati. Autore: " + libriTrovati.getAutore() + ", titolo: " + libriTrovati.getTitolo());
+        }
+
+        if (elTrovati instanceof Riviste) {
+            Riviste rivisteTrovate = (Riviste) elTrovati;
+            System.out.print("Libri con anno di pubblicazione " + rivisteTrovate.getAnnoPubblicazione() + " trovati. Titolo: " + rivisteTrovate.getTitolo());
+        } else {
+            System.out.println("Nessun libro/rivista trovato con anno di pubblicazione " + annoInserito);
 
         }
 
