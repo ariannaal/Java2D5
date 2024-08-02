@@ -1,22 +1,20 @@
 package entities;
 
-import java.time.LocalDate;
-
 public abstract class Catalogo {
 
-    private String isbn;
+    private long isbn;
     private String titolo;
-    private LocalDate annoPubblicazione;
+    private int annoPubblicazione;
     private int nPagine;
 
-    public Catalogo(String isbn, String titolo, LocalDate annoPubblicazione, int nPagine) {
+    public Catalogo(long isbn, String titolo, int annoPubblicazione, int nPagine) {
         this.isbn = isbn;
         this.titolo = titolo;
         this.annoPubblicazione = annoPubblicazione;
         this.nPagine = nPagine;
     }
 
-    public String getIsbn() {
+    public long getIsbn() {
         return isbn;
     }
 
@@ -24,7 +22,7 @@ public abstract class Catalogo {
         return titolo;
     }
 
-    public LocalDate getAnnoPubblicazione() {
+    public int getAnnoPubblicazione() {
         return annoPubblicazione;
     }
 
